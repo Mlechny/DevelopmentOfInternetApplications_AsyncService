@@ -17,7 +17,7 @@ TOKEN = 'secret_token'
 def get_random_status(form_id):
     time.sleep(5)
     return {
-        "notification_id": form_id,
+        "form_id": form_id,
         "status":bool(random.randint(0, 3)),
     }
 
