@@ -21,7 +21,7 @@ def get_random_status(form_id):
     time.sleep(5)
     return {
         "form_id": form_id,
-        "result":bool(random.randint(0, 3)),
+        "testing_result":bool(random.randint(0, 3)),
     }
 
 
@@ -33,7 +33,7 @@ def status_callback(task):
         return
 
     url = str(CALLBACK_URL+str(result["form_id"])+'/testing/')
-    requests.put(url, data={"testing_status": result['result'], "token": TOKEN}, timeout=3)
+    requests.put(url, data={"testing_result": result['testing_result'], "token": TOKEN}, timeout=5)
 
 
 @api_view(['POST'])
@@ -43,5 +43,5 @@ def set_status(request):
 
         task = executor.submit(get_random_status, form_id)
         task.add_done_callback(status_callback)
-        return Response(result=status.HTTP_200_OK)
-    return Response(result=status.HTTP_400_BAD_REQUEST)
+        return Response(status==status.HTTP_200_OK)
+    return Response(status==status.HTTP_400_BAD_REQUEST)
